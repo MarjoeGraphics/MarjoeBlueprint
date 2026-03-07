@@ -5,12 +5,26 @@
     <title>Marjoe Blueprint</title>
     <script type="text/javascript">
       // Simple redirect for Single Page Applications on GitHub Pages
-      var pathSegmentsToKeep = 1;
+      // This version is path-agnostic to handle both root and subfolder deployments
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) {
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+
       var l = window.location;
+      // If we are here, it means we hit a 404.
+      // We want to redirect to index.html with the current path in a query param
+      var segment = l.pathname.split('/')[1] === 'portfolio' ? '/portfolio' : '';
+      var path = l.pathname.replace(segment, '');
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
-        l.pathname.split('/').slice(1 + pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        segment + '/?p=' + path.replace(/&/g, '~and~') +
         (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
         l.hash
       );

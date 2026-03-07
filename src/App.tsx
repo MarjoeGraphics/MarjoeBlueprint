@@ -66,8 +66,7 @@ const AnimatedLetters = ({ text, delay = 0 }: { text: string, delay?: number }) 
   return (
     <motion.span
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      animate="visible"
       variants={{
         hidden: { opacity: 1 },
         visible: {
@@ -75,7 +74,7 @@ const AnimatedLetters = ({ text, delay = 0 }: { text: string, delay?: number }) 
           transition: { staggerChildren: 0.05, delayChildren: delay }
         }
       }}
-      className="inline-flex flex-wrap justify-center"
+      className="inline-flex flex-wrap justify-center overflow-hidden"
     >
       {text.split("").map((char, i) => (
         <motion.span
@@ -84,7 +83,7 @@ const AnimatedLetters = ({ text, delay = 0 }: { text: string, delay?: number }) 
             hidden: { y: "100%", opacity: 0 },
             visible: { y: "0%", opacity: 1, transition: { type: "spring", damping: 15, stiffness: 150 } }
           }}
-          className="inline-block"
+          className="inline-block relative"
           style={{ whiteSpace: char === " " ? "pre" : "normal" }}
         >
           {char}
@@ -153,21 +152,25 @@ const Hero = () => {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-[100px] animate-pulse" style={{ animationDelay: "2s" }} />
       </div>
 
-      <motion.div style={{ opacity }} className="relative z-10 flex flex-col items-center w-full mix-blend-difference">
-        <h1 className="text-[18vw] md:text-[15vw] leading-[0.85] font-black tracking-tighter uppercase flex flex-col items-center w-full text-white">
+      <motion.div style={{ opacity }} className="relative z-10 flex flex-col items-center w-full">
+        <h1 className="text-[18vw] md:text-[15vw] leading-[0.85] font-black tracking-tighter uppercase flex flex-col items-center w-full dark:text-white text-neutral-900">
           <motion.div style={{ y: y1 }} className="flex z-20 flex-wrap justify-center">
-            <AnimatedLetters text="Brand" delay={0.2} />
-            <motion.span 
-              initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, type: "spring" }} 
-              className="text-indigo-500"
-            >.</motion.span>
+            <span className="flex">
+              <AnimatedLetters text="Brand" delay={0.2} />
+              <motion.span
+                initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, type: "spring" }}
+                className="text-indigo-500"
+              >.</motion.span>
+            </span>
           </motion.div>
           <motion.div style={{ y: y2 }} className="flex z-10 flex-wrap justify-center">
-            <AnimatedLetters text="Systems" delay={0.6} />
-            <motion.span 
-              initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2, type: "spring" }} 
-              className="text-cyan-500"
-            >.</motion.span>
+            <span className="flex">
+              <AnimatedLetters text="Systems" delay={0.6} />
+              <motion.span
+                initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2, type: "spring" }}
+                className="text-cyan-500"
+              >.</motion.span>
+            </span>
           </motion.div>
         </h1>
 
