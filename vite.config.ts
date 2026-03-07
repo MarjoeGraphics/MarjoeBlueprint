@@ -6,7 +6,8 @@ import { defineConfig, loadEnv } from 'vite';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: '/portfolio/',
+    // Setting base to empty string for relative asset paths
+    base: '',
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
@@ -23,7 +24,10 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
+      assetsDir: 'assets',
       sourcemap: true,
+      minify: 'esbuild',
+      reportCompressedSize: false,
     },
   };
 });
